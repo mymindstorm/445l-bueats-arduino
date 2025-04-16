@@ -11,6 +11,12 @@
 #define LED_BUILTIN 2  // Set the GPIO pin where you connected your test LED
 #endif
 
+
+#define RX_PIN 44
+#define TX_PIN 43
+#define BAUD 115200
+
+
 // Set these to your desired credentials.
 const char *ssid = "better-uber";
 const char *password = "expressif-lied-to-me";
@@ -50,7 +56,8 @@ void handleMessage(const String& tag, const String& message) {
         float x, y;
         int width, height;
         sscanf(message.c_str(), "%f,%f,%d,%d", &y, &x, &height, &width);
-        Serial.printf("Received CV coordinates: x=%f, y=%f\n - Max Coordinates: width=%d, height=%d", x, y, width, height);
+        Serial.printf("Received CV coordinates: x=%f, y=%f\n - Max Coordinates: width=%d, height=%d\n", x, y, width, height);
+        Serial1.printf("<%d,%d>", round(x), width);
         // Add your CV handling code here
     }
     // Add more tag handlers here
@@ -95,6 +102,9 @@ void setup() {
   // for (int i = 0; i < sizeof(outgoingPacket); i++) {
   //   outgoingPacket[i] = i % 256;
   // }
+
+  Serial1.begin(BAUD,SERIAL_8N1,RX_PIN,TX_PIN); //this for tm4c
+
 }
 
 void processIncomingPacket(int packetSize) {
