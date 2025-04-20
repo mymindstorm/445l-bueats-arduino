@@ -145,22 +145,16 @@ void processIncomingPacket(int packetSize) {
         
         // Find message start (after tag newline)
         char* messageStart = tagEnd + 1;
-        // Find message end
-        char* messageEnd = strchr(messageStart, NEWLINE);
-        if (!messageEnd) {
-            Serial.println("No message terminator found");
-            return;
-        }
         
-        // Calculate message length
-        int messageLength = messageEnd - messageStart;
+        // Calculate message length (from after tag newline to end of packet)
+        int messageLength = length - (messageStart - incomingPacket);
         if (messageLength > MAX_MESSAGE_SIZE) {
             Serial.println("Message too long");
             return;
         }
         
-        // Extract message
-        String message = String(messageStart).substring(0, messageLength);
+        // Extract message - everything after the tag's newline
+        String message = String(messageStart);
         
         // Handle the message based on its tag
         handleMessage(tag, message);
