@@ -25,7 +25,7 @@ const char *password = "expressif-lied-to-me";
 
 // Constants for message parsing
 const int MAX_TAG_SIZE = 96;
-const int MAX_MESSAGE_SIZE = 4000;
+const int MAX_MESSAGE_SIZE = 4096;
 const char NEWLINE = '\n';
 
 
@@ -60,7 +60,7 @@ void handleMessage(const String& tag, const String& message) {
         sscanf(message.c_str(), "%f,%f,%d,%d", &y, &x, &height, &width);
         Serial.printf("Received CV coordinates: x=%f, y=%f\n - Max Coordinates: width=%d, height=%d\n", x, y, width, height);
         Serial1.printf("<%d,%d,%d>", (int)round(x), width, (int)round(y));
-        Serial.printf("<%d,%d>\n", (int)round(x), width, (int)round(y));
+        Serial.printf("<%d,%d,%d>\n", (int)round(x), width, (int)round(y));
         // Add your CV handling code here
     }
     // Add more tag handlers here
