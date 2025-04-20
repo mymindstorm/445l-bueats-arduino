@@ -12,8 +12,10 @@
 #endif
 
 
-#define RX_PIN 44
-#define TX_PIN 43
+//#define RX_PIN 44
+//#define TX_PIN 43
+#define RX_PIN 9
+#define TX_PIN 10
 #define BAUD 115200
 
 
@@ -57,7 +59,8 @@ void handleMessage(const String& tag, const String& message) {
         int width, height;
         sscanf(message.c_str(), "%f,%f,%d,%d", &y, &x, &height, &width);
         Serial.printf("Received CV coordinates: x=%f, y=%f\n - Max Coordinates: width=%d, height=%d\n", x, y, width, height);
-        Serial1.printf("<%d,%d>", round(x), width);
+        Serial1.printf("<%d,%d,%d>", (int)round(x), width, (int)round(y));
+        Serial.printf("<%d,%d>\n", (int)round(x), width, (int)round(y));
         // Add your CV handling code here
     }
     // Add more tag handlers here
