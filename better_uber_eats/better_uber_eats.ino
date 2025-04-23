@@ -49,10 +49,14 @@ uint16_t remotePort = 0;
 // unsigned long lastSendReportTime = 0;
 // float maxSendDataRate = 0;
 bool isSending = false;
+bool automatic = true;
 
 // Function to handle different types of messages based on tags
 void handleMessage(const String& tag, const String& message) {
     if (tag == "CV") {
+      if(!automatic) {
+        return;
+      }
         // Handle computer vision messages
         // Example: Parse x,y coordinates
         float x, y;
@@ -64,6 +68,46 @@ void handleMessage(const String& tag, const String& message) {
         // Add your CV handling code here
     }
     // Add more tag handlers here
+    else if(tag == "FW"){
+      int speed;
+      sscanf(message.c_str(), "%d", &speed);
+      Serial1.printf("{%d,%d,%d,%d}", speed, speed, speed, speed);
+
+    }else if(tag == "FL"){
+      int speed;
+      sscanf(message.c_str(), "%d", &speed);
+      Serial1.printf("{%d,%d,0,0}", speed, speed);
+      
+    }else if(tag == "FR"){
+      int speed;
+      sscanf(message.c_str(), "%d", &speed);
+      Serial1.printf("{0,0,%d,%d}", speed, speed);
+      
+    }else if(tag == "BK"){
+      int speed;
+      sscanf(message.c_str(), "%d", &speed);
+      Serial1.printf("{%d,%d,%d,%d}", -speed, -speed, -speed, -speed);
+      
+    }else if(tag == "BL"){
+      int speed;
+      sscanf(message.c_str(), "%d", &speed);
+      Serial1.printf("{%d,%d,0,0}", -speed, -speed);
+      
+    }else if(tag == "BR"){
+      int speed;
+      sscanf(message.c_str(), "%d", &speed);
+      Serial1.printf("{0,0,%d,%d}", -speed, -speed);
+      
+    }else if(tag == "ST"){
+      int speed;
+      sscanf(message.c_str(), "%d", &speed);
+      Serial1.printf("{0,0,0,0}");
+      
+    }else if(tag == "TG"){
+      int speed;
+      sscanf(message.c_str(), "%d", &speed);
+      automatic = !automatic;
+    }
     else {
         Serial.printf("Unknown tag received: %s\n", tag.c_str());
         Serial.printf("Unknown tag received - message: %s\n", message.c_str());
